@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect} from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {fetchProducts} from "./store/Products/store"
+
+import "./App.css"
+import {AppDispatch} from "./store/store"
+import {selectProducts} from "./store/Products/selectors"
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const dispatch = useDispatch<AppDispatch>()
+	const products = useSelector(selectProducts)
+
+	useEffect(() => {
+		dispatch(fetchProducts())
+	}, [dispatch])
+	return (
+		<div className="App">
+			{products &&
+				products.map((product) => (
+					<div className="product-card" key={product.id}>
+						<img src={product.images[0]} alt={product.title} />
+						<div className="product-details">
+							<h2>{product.title}</h2>
+							<p>{product.description}</p>
+							<p>Price: ${product.price}</p>
+						</div>
+					</div>
+				))}
+		</div>
+	)
 }
 
-export default App;
+export default App
