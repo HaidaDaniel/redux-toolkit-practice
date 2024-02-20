@@ -1,25 +1,19 @@
-import {Drawer, List, ListItem, ListItemText} from "@material-ui/core"
+import {Nav} from "react-bootstrap"
 import {Link} from "react-router-dom"
 
 function LeftNav() {
 	return (
-		<>
-			<Drawer open={true}>
-				<List>
-					<ListItem button>
-						<Link to="/">Home</Link>
-					</ListItem>
-					<ListItem button>
-						<Link to="/about">About</Link>
-					</ListItem>
-					<ListItem button>
-						<Link to="/dashboard/messages">
-							Messages (Dashboard)
-						</Link>
-					</ListItem>
-				</List>
-			</Drawer>
-		</>
+		<Nav defaultActiveKey="/home" className="flex-column">
+			<Nav.Link as={Link} to="/">
+				Home
+			</Nav.Link>
+			<Nav.Link as={Link} to="/about">
+				About
+			</Nav.Link>
+			<Nav.Link as={Link} to="/contact">
+				Contact
+			</Nav.Link>
+		</Nav>
 	)
 }
 

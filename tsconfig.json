@@ -15,6 +15,7 @@
 		"isolatedModules": false,
 		"noEmit": false,
 		"sourceMap": true,
+
 		// "baseUrl": ".",
 		// "paths": {
 		// 	"@/src/*": ["src/*"]
@@ -22,5 +23,5 @@
 		// "typeRoots": ["./src/types"],
 		"jsx": "react-jsx"
 	},
-	"include": ["src"]
+	"include": ["src", "declaration.d.ts"]
 }
