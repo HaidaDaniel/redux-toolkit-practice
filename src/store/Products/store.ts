@@ -4,16 +4,16 @@ import IProduct from "../../types/IProduct"
 
 interface ProductState {
 	products: IProduct[]
-	product: IProduct | null
-	loading: boolean
-	error: string | null
+	productsState: {loading: boolean; error: string | null}
+	selectedProduct: IProduct | null
+	selectedProductState: {loading: boolean; error: string | null}
 }
 
 const initialState: ProductState = {
 	products: [],
-	product: null,
-	loading: false,
-	error: null,
+	productsState: {loading: false, error: null},
+	selectedProduct: null,
+	selectedProductState: {loading: false, error: null},
 }
 
 export const fetchProducts = createAsyncThunk(
@@ -38,33 +38,36 @@ const productSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchProducts.pending, (state) => {
-				state.loading = true
-				state.error = null
+				state.productsState.loading = true
+				state.productsState.error = null
 			})
 			.addCase(
 				fetchProducts.fulfilled,
 				(state, action: PayloadAction<IProduct[]>) => {
-					state.loading = false
+					state.productsState.loading = false
 					state.products = action.payload
 				}
 			)
 			.addCase(fetchProducts.rejected, (state, action) => {
-				state.loading = false
-				state.error = action.error.message || "Failed to fetch products"
+				state.productsState.loading = false
+				state.productsState.error =
+					action.error.message || "Failed to fetch products"
 			})
 			.addCase(fetchProduct.pending, (state) => {
-				state.loading = true
+				state.selectedProductState.loading = true
+				state.selectedProductState.error = null
 			})
 			.addCase(
 				fetchProduct.fulfilled,
 				(state, action: PayloadAction<IProduct>) => {
-					state.loading = false
-					state.product = action.payload
+					state.selectedProductState.loading = false
+					state.selectedProduct = action.payload
 				}
 			)
 			.addCase(fetchProduct.rejected, (state, action) => {
-				state.loading = false
-				state.error = action.error.message || "Failed to fetch product"
+				state.selectedProductState.loading = false
+				state.selectedProductState.error =
+					action.error.message || "Failed to fetch product"
 			})
 	},
 })

@@ -17,5 +17,5 @@ export default function ProductPage() {
 
 	const product = useSelector(selectProduct)
 
-	return <h1>{product?.product?.description}</h1>
+	return <h1>{product?.description}</h1>
 }
