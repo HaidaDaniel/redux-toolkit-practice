@@ -1,4 +1,4 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit"
 import productService from "./service"
 import IProduct from "../../types/IProduct"
 
@@ -32,10 +32,13 @@ const productSlice = createSlice({
 				state.loading = true
 				state.error = null
 			})
-			.addCase(fetchProducts.fulfilled, (state, action) => {
-				state.loading = false
-				state.products = action.payload
-			})
+			.addCase(
+				fetchProducts.fulfilled,
+				(state, action: PayloadAction<IProduct[]>) => {
+					state.loading = false
+					state.products = action.payload
+				}
+			)
 			.addCase(fetchProducts.rejected, (state, action) => {
 				state.loading = false
 				state.error = action.error.message || "Failed to fetch products"

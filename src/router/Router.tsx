@@ -1,8 +1,6 @@
 import {createBrowserRouter} from "react-router-dom"
 import Layout from "../components/Layout/Layout"
-import {Suspense} from "react"
-// import About from "../pages/About/About"
-// import Contact from "../pages/Contact/Contact"
+
 import lazyWithPreload from "./preload/lazyWithPreload"
 
 const Home = lazyWithPreload(() => import("../pages/Home/Home"))
@@ -16,11 +14,7 @@ export const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: (
-					<Suspense fallback={<div>Loading...</div>}>
-						<Home />
-					</Suspense>
-				),
+				element: <Home />,
 			},
 		],
 	},
@@ -30,11 +24,7 @@ export const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: (
-					<Suspense fallback={<div>Loading...</div>}>
-						<About />
-					</Suspense>
-				),
+				element: <About />,
 			},
 		],
 	},
@@ -44,11 +34,7 @@ export const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: (
-					<Suspense fallback={<div>Loading...</div>}>
-						<Contact />
-					</Suspense>
-				),
+				element: <Contact />,
 			},
 		],
 	},
