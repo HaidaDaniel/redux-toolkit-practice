@@ -2,6 +2,7 @@ import {createBrowserRouter} from "react-router-dom"
 import Layout from "../components/Layout/Layout"
 
 import lazyWithPreload from "./preload/lazyWithPreload"
+import ErrorMessage from "./Error/ErrorMessage"
 
 const Home = lazyWithPreload(() => import("../pages/Home/Home"))
 const About = lazyWithPreload(() => import("../pages/About/About"))
@@ -11,6 +12,7 @@ export const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <Layout />,
+		errorElement: <ErrorMessage />,
 		children: [
 			{
 				index: true,
