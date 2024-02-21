@@ -7,6 +7,7 @@ import ErrorMessage from "./Error/ErrorMessage"
 const Home = lazyWithPreload(() => import("../pages/Home/Home"))
 const About = lazyWithPreload(() => import("../pages/About/About"))
 const Contact = lazyWithPreload(() => import("../pages/Contact/Contact"))
+const ProductPage = lazyWithPreload(() => import("../pages/Product/Product"))
 
 export const router = createBrowserRouter([
 	{
@@ -37,6 +38,16 @@ export const router = createBrowserRouter([
 			{
 				index: true,
 				element: <Contact />,
+			},
+		],
+	},
+	{
+		path: "/products/:productId",
+		element: <Layout />,
+		children: [
+			{
+				index: true,
+				element: <ProductPage />,
 			},
 		],
 	},

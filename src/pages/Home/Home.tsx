@@ -4,10 +4,12 @@ import {selectProducts} from "../../store/Products/selectors"
 import {fetchProducts} from "../../store/Products/store"
 import {useAppDispatch} from "../../store/store"
 import styles from "./Home.module.scss"
+import {useNavigate} from "react-router-dom"
 
 function Home() {
 	const dispatch = useAppDispatch()
 	const products = useSelector(selectProducts)
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		dispatch(fetchProducts())
@@ -24,6 +26,9 @@ function Home() {
 						>
 							<div className="card h-100">
 								<img
+									onClick={() =>
+										navigate(`/products/${product.id}`)
+									}
 									src={product.images[0]}
 									alt={product.title}
 									className="card-img-top"

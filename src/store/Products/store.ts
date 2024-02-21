@@ -4,12 +4,14 @@ import IProduct from "../../types/IProduct"
 
 interface ProductState {
 	products: IProduct[]
+	product: IProduct | null
 	loading: boolean
 	error: string | null
 }
 
 const initialState: ProductState = {
 	products: [],
+	product: null,
 	loading: false,
 	error: null,
 }
@@ -18,6 +20,13 @@ export const fetchProducts = createAsyncThunk(
 	"products/fetchProducts",
 	async () => {
 		const response = await productService.getAllProducts()
+		return response.data
+	}
+)
+export const fetchProduct = createAsyncThunk(
+	"products/fetchProduct",
+	async (id: number) => {
+		const response = await productService.getProductById(id)
 		return response.data
 	}
 )
@@ -42,6 +51,20 @@ const productSlice = createSlice({
 			.addCase(fetchProducts.rejected, (state, action) => {
 				state.loading = false
 				state.error = action.error.message || "Failed to fetch products"
+			})
+			.addCase(fetchProduct.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(
+				fetchProduct.fulfilled,
+				(state, action: PayloadAction<IProduct>) => {
+					state.loading = false
+					state.product = action.payload
+				}
+			)
+			.addCase(fetchProduct.rejected, (state, action) => {
+				state.loading = false
+				state.error = action.error.message || "Failed to fetch product"
 			})
 	},
 })
