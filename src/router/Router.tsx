@@ -8,6 +8,9 @@ const Home = lazyWithPreload(() => import("../pages/Home/Home"))
 const About = lazyWithPreload(() => import("../pages/About/About"))
 const Contact = lazyWithPreload(() => import("../pages/Contact/Contact"))
 const ProductPage = lazyWithPreload(() => import("../pages/Product/Product"))
+const ProductManagement = lazyWithPreload(
+	() => import("../pages/ProductManagement/ProductManagement")
+)
 
 export const router = createBrowserRouter([
 	{
@@ -38,6 +41,16 @@ export const router = createBrowserRouter([
 			{
 				index: true,
 				element: <Contact />,
+			},
+		],
+	},
+	{
+		path: "/product-management",
+		element: <Layout />,
+		children: [
+			{
+				index: true,
+				element: <ProductManagement />,
 			},
 		],
 	},
