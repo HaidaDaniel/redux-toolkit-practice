@@ -15,11 +15,7 @@ import {
 
 import {CircularProgress, Paper} from "@mui/material"
 
-import {
-	ColumnExtensionsState,
-	SortingColumnExtensionsState,
-	columns,
-} from "./GridProperties"
+import {SortingColumnExtensionsState, columns} from "./GridProperties"
 import {fetchProducts} from "../../store/Products/store"
 import {
 	selectProducts,
@@ -33,6 +29,8 @@ import {
 	SearchState,
 	SortingState,
 } from "@devexpress/dx-react-grid"
+import TableRow from "./TableRow"
+import {useDeleteProductMutation} from "../../store/Products/deleteService"
 
 function ProductManagement() {
 	// const [tableColumnExtensions] = useState(ColumnExtensionsState)
@@ -41,7 +39,7 @@ function ProductManagement() {
 	const dispatch = useAppDispatch()
 	const products = useSelector(selectProducts)
 	const productsStatus = useSelector(selectProductsState)
-
+	const [deleteFilesTrigger] = useDeleteProductMutation()
 	const gridDataConverter = (data: any) => {
 		const convertedData = data.map((item: any) => {
 			const flattenedItem: {[key: string]: any} = {}
@@ -60,6 +58,10 @@ function ProductManagement() {
 			return flattenedItem
 		})
 		return convertedData
+	}
+
+	const handleDelete = (id: number) => {
+		deleteFilesTrigger(id)
 	}
 
 	useEffect(() => {
@@ -84,15 +86,15 @@ function ProductManagement() {
 					<IntegratedFiltering />
 					<IntegratedPaging />
 					<Table
-					// columnExtensions={tableColumnExtensions}
-					// rowComponent={({row}) => (
-					// 	// <TableRow
-					// 	// 	row={row}
-					// 	// 	columns={columns}
-					// 	// 	// onToggleAction={}
-					// 	// 	isActionVisible={true}
-					// 	// />
-					// )}
+						// columnExtensions={tableColumnExtensions}
+						rowComponent={({row}) => (
+							<TableRow
+								row={row}
+								columns={columns}
+								onToggleAction={() => handleDelete(row.id)}
+								actionLabel={"Delete"} // onToggleAction={}
+							/>
+						)}
 					/>
 					<PagingPanel />
 					<Toolbar />

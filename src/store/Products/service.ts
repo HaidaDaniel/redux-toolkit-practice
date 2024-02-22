@@ -1,5 +1,6 @@
 import axios from "axios"
 import IProduct from "../../types/IProduct"
+
 import {BASE_URL} from "../../api"
 
 export interface ProductService {
@@ -13,6 +14,9 @@ const productService = {
 	},
 	getProductById: async (id: number) => {
 		return axios.get<IProduct>(`${BASE_URL}/products/${id}`)
+	},
+	deleteProduct: async (id: number) => {
+		return axios.delete(`${BASE_URL}/products/${id}`)
 	},
 }
 

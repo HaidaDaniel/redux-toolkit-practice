@@ -11,6 +11,10 @@ export const columns = [
 		name: "category.name",
 		title: "Category",
 	},
+	{
+		name: "delete",
+		title: "Delete",
+	},
 ]
 
 export const ColumnExtensionsState = [
