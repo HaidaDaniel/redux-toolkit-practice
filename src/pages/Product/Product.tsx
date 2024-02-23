@@ -5,8 +5,8 @@ import {useAppDispatch} from "../../store/store"
 import {useEffect} from "react"
 import {selectProduct, selectProductState} from "../../store/Products/selectors"
 import Carousel from "../../components/Carousel/Carousel"
-import {CircularProgress} from "@mui/material"
 import DataStateHandler from "../../helpers/DataStateHandler/DataStateHandler"
+import styles from "./Product.module.scss"
 
 export default function ProductPage() {
 	const {productId} = useParams()
@@ -22,7 +22,7 @@ export default function ProductPage() {
 	const productState = useSelector(selectProductState)
 
 	return (
-		<div>
+		<div className={styles.ProductPage}>
 			<DataStateHandler
 				data={product}
 				dataState={productState}

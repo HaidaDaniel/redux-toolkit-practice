@@ -1,11 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit"
 import productReducer from "./Products/store"
+import categoriesReducer from "./Categories/store"
 import {useDispatch} from "react-redux"
 import {deleteProductApi} from "./Products/deleteService"
 
 const store = configureStore({
 	reducer: {
 		products: productReducer,
+		categories: categoriesReducer,
 		[deleteProductApi.reducerPath]: deleteProductApi.reducer,
 	},
 	middleware: (getDefaultMiddleware) =>
