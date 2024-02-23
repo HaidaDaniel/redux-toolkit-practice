@@ -4,9 +4,9 @@ import {fetchProduct} from "../../store/Products/store"
 import {useAppDispatch} from "../../store/store"
 import {useEffect} from "react"
 import {selectProduct, selectProductState} from "../../store/Products/selectors"
-import Carousel from "../../components/Carousel/Carousel"
 import DataStateHandler from "../../helpers/DataStateHandler/DataStateHandler"
 import styles from "./Product.module.scss"
+import ProductDetails from "../../components/Product/ProductDetails"
 
 export default function ProductPage() {
 	const {productId} = useParams()
@@ -28,14 +28,7 @@ export default function ProductPage() {
 				dataState={productState}
 				children={
 					<>
-						<h1>{product?.title}</h1>
-						{product?.images && <Carousel imgs={product.images} />}
-
-						<p>
-							Description: <br /> {product?.description}
-						</p>
-
-						<p>Price: {product?.price} usd</p>
+						<ProductDetails product={product} />
 					</>
 				}
 			/>

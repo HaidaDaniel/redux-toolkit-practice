@@ -5,14 +5,14 @@ import IProduct from "../../types/IProduct"
 interface ProductState {
 	products: IProduct[]
 	productsState: {loading: boolean; error: string | null}
-	selectedProduct: IProduct | null
+	selectedProduct: IProduct
 	selectedProductState: {loading: boolean; error: string | null}
 }
 
 const initialState: ProductState = {
 	products: [],
 	productsState: {loading: false, error: null},
-	selectedProduct: null,
+	selectedProduct: {} as IProduct,
 	selectedProductState: {loading: false, error: null},
 }
 
