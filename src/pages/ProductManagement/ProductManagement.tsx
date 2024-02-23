@@ -44,24 +44,39 @@ function ProductManagement() {
 		const convertedData = data.map((item: any) => {
 			const flattenedItem: {[key: string]: any} = {}
 
+			const snakeCaseKey = (key: string) =>
+				key.replace(/([A-Z])/g, "_$1").toLowerCase()
+
 			for (const key in item) {
+				const snakeKey = snakeCaseKey(key)
+
 				if (typeof item[key] === "object") {
 					for (const nestedKey in item[key]) {
-						flattenedItem[`${key}.${nestedKey}`] =
+						const snakeNestedKey = snakeCaseKey(nestedKey)
+
+						flattenedItem[`${snakeKey}.${snakeNestedKey}`] =
 							item[key][nestedKey]
 					}
 				} else {
-					flattenedItem[key] = item[key]
+					flattenedItem[snakeKey] = item[key]
 				}
 			}
 
 			return flattenedItem
 		})
+
+		console.log(convertedData)
 		return convertedData
 	}
 
 	const handleDelete = (id: number) => {
-		deleteFilesTrigger(id)
+		const confirmDelete = prompt(
+			"Are you sure you want to delete this product?"
+		)
+
+		if (confirmDelete) {
+			deleteFilesTrigger(id)
+		}
 	}
 
 	useEffect(() => {
@@ -92,7 +107,7 @@ function ProductManagement() {
 								row={row}
 								columns={columns}
 								onToggleAction={() => handleDelete(row.id)}
-								actionLabel={"Delete"} // onToggleAction={}
+								actionLabel={"Delete"}
 							/>
 						)}
 					/>
