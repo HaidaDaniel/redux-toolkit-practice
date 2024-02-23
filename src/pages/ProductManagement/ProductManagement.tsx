@@ -70,11 +70,7 @@ function ProductManagement() {
 	}
 
 	const handleDelete = (id: number) => {
-		const confirmDelete = prompt(
-			"Are you sure you want to delete this product?"
-		)
-
-		if (confirmDelete) {
+		if (window.confirm("Are you sure you want to delete this product?")) {
 			deleteFilesTrigger(id)
 		}
 	}

@@ -3,7 +3,10 @@ import {useSelector} from "react-redux"
 import {fetchProduct} from "../../store/Products/store"
 import {useAppDispatch} from "../../store/store"
 import {useEffect} from "react"
-import {selectProduct} from "../../store/Products/selectors"
+import {selectProduct, selectProductState} from "../../store/Products/selectors"
+import Carousel from "../../components/Carousel/Carousel"
+import {CircularProgress} from "@mui/material"
+import DataStateHandler from "../../helpers/DataStateHandler/DataStateHandler"
 
 export default function ProductPage() {
 	const {productId} = useParams()
@@ -16,6 +19,26 @@ export default function ProductPage() {
 	}, [dispatch, productId])
 
 	const product = useSelector(selectProduct)
+	const productState = useSelector(selectProductState)
 
-	return <h1>{product?.description}</h1>
+	return (
+		<div>
+			<DataStateHandler
+				data={product}
+				dataState={productState}
+				children={
+					<>
+						<h1>{product?.title}</h1>
+						{product?.images && <Carousel imgs={product.images} />}
+
+						<p>
+							Description: <br /> {product?.description}
+						</p>
+
+						<p>Price: {product?.price} usd</p>
+					</>
+				}
+			/>
+		</div>
+	)
 }
