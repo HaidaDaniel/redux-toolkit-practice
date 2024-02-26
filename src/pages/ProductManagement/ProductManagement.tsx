@@ -76,7 +76,7 @@ function ProductManagement() {
 	}
 
 	useEffect(() => {
-		dispatch(fetchProducts())
+		dispatch(fetchProducts({offset: 0, limit: 20}))
 	}, [dispatch])
 
 	return (

@@ -1,4 +1,4 @@
-import {useEffect} from "react"
+import {useEffect, useState} from "react"
 import {useSelector} from "react-redux"
 import {selectProducts} from "../../store/Products/selectors"
 import {fetchProducts} from "../../store/Products/store"
@@ -7,14 +7,30 @@ import styles from "./Home.module.scss"
 import {useNavigate} from "react-router-dom"
 
 function Home() {
+	const [offset, setOffset] = useState(0)
+	const productsPerPage = 10
+
 	const dispatch = useAppDispatch()
 	const products = useSelector(selectProducts)
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		dispatch(fetchProducts())
+		dispatch(fetchProducts({offset: offset, limit: productsPerPage}))
 	}, [dispatch])
 
+	useEffect(() => {
+		const handleScroll = () => {
+			if (
+				window.innerHeight + window.scrollY >=
+				document.body.offsetHeight - 200
+			) {
+				setOffset((prevOffset) => prevOffset + productsPerPage)
+			}
+		}
+
+		window.addEventListener("scroll", handleScroll)
+		return () => window.removeEventListener("scroll", handleScroll)
+	}, [])
 	return (
 		<div className={styles.Home}>
 			<div className="row">
