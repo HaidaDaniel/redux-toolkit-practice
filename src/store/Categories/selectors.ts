@@ -1,10 +1,7 @@
 import {RootState} from "../store"
 
-export const selectProducts = (state: RootState) => state.products.products
-export const selectProductsState = (state: RootState) =>
-	state.products.productsState
-export const selectProduct = (state: RootState) =>
-	state.products.selectedProduct
+export const selectCategories = (state: RootState) =>
+	state.categories.Categories
 
-export const selectProductState = (state: RootState) =>
-	state.products.selectedProductState
+export const selectCategoriesState = (state: RootState) =>
+	state.categories.CategoriesState

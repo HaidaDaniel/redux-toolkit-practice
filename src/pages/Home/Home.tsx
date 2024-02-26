@@ -5,8 +5,14 @@ import {useNavigate} from "react-router-dom"
 import GlobalConfig from "../../GlobalConfig"
 import IProduct from "../../types/IProduct"
 import {useGetAllProductsQuery} from "../../store/Products/ProductService"
+import {RootState, useAppDispatch} from "../../store/store"
+import {fetchCategories} from "../../store/Categories/store"
+import {useSelector} from "react-redux"
 
 function Home() {
+	const [selectedCategories, setSelectedCategories] = useState<
+		number[] | null
+	>([])
 	const [offset, setOffset] = useState(GlobalConfig.paginationParams.offset)
 	const [products, setProducts] = useState<IProduct[]>([])
 	const {
@@ -18,7 +24,11 @@ function Home() {
 		limit: GlobalConfig.paginationParams.itemsPerPage,
 	})
 
+	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
+	const categories = useSelector(
+		(state: RootState) => state.categories.Categories
+	)
 
 	useEffect(() => {
 		if (newProductsResult !== products && newProductsResult !== undefined) {
@@ -27,6 +37,7 @@ function Home() {
 	}, [newProductsResult])
 
 	useEffect(() => {
+		dispatch(fetchCategories())
 		const handleScroll = () => {
 			if (
 				window.innerHeight + window.scrollY >=
@@ -46,8 +57,54 @@ function Home() {
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [])
 
+	const toggleCategory = (categoryId: number) => {
+		console.log(categoryId)
+		if (categoryId === 0) {
+			setSelectedCategories(null)
+		} else if (selectedCategories) {
+			if (selectedCategories.includes(categoryId)) {
+				setSelectedCategories(
+					selectedCategories.filter((c) => c !== categoryId)
+				)
+			} else {
+				setSelectedCategories([...selectedCategories, categoryId])
+			}
+		} else {
+			setSelectedCategories([categoryId])
+		}
+	}
+
 	return (
 		<div className={styles.Home}>
+			<div className="row">
+				<div className="col">
+					<button
+						onClick={() => toggleCategory(0)}
+						className={
+							selectedCategories && selectedCategories.length > 0
+								? styles.active
+								: ""
+						}
+					>
+						{"All"}
+					</button>
+					{categories &&
+						categories.map((category) => (
+							<button
+								key={category.id}
+								onClick={() => toggleCategory(category.id)}
+								className={
+									selectedCategories &&
+									selectedCategories.includes(category.id)
+										? styles.active
+										: ""
+								}
+							>
+								{category.name}
+							</button>
+						))}
+				</div>
+			</div>
 			<div className="row">
 				{products &&
 					products.map((product) => (
