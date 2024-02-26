@@ -8,17 +8,9 @@ export interface ProductService {
 	getProductById(id: number): Promise<IProduct>
 }
 
-export interface GetProductsParams {
-	offset?: number
-	limit?: number
-}
 const productService = {
-	getAllProducts(params?: GetProductsParams): Promise<IProduct[]> {
-		return axios
-			.get<IProduct[]>(`${BASE_URL}/products`, {
-				params,
-			})
-			.then((response) => response.data)
+	getAllProducts: async () => {
+		return axios.get<IProduct[]>(`${BASE_URL}/products`)
 	},
 	getProductById: async (id: number) => {
 		return axios.get<IProduct>(`${BASE_URL}/products/${id}`)

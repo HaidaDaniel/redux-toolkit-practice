@@ -30,7 +30,7 @@ import {
 	SortingState,
 } from "@devexpress/dx-react-grid"
 import TableRow from "./TableRow"
-import {useDeleteProductMutation} from "../../store/Products/deleteService"
+import {useDeleteProductMutation} from "../../store/Products/ProductService"
 
 function ProductManagement() {
 	// const [tableColumnExtensions] = useState(ColumnExtensionsState)
@@ -76,7 +76,7 @@ function ProductManagement() {
 	}
 
 	useEffect(() => {
-		dispatch(fetchProducts({offset: 0, limit: 20}))
+		dispatch(fetchProducts())
 	}, [dispatch])
 
 	return (

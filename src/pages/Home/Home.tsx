@@ -1,22 +1,26 @@
 import {useEffect, useState} from "react"
-import {useSelector} from "react-redux"
-import {selectProducts} from "../../store/Products/selectors"
-import {fetchProducts} from "../../store/Products/store"
-import {useAppDispatch} from "../../store/store"
+
 import styles from "./Home.module.scss"
 import {useNavigate} from "react-router-dom"
+import GlobalConfig from "../../GlobalConfig"
+import IProduct from "../../types/IProduct"
+import {useGetAllProductsQuery} from "../../store/Products/ProductService"
 
 function Home() {
-	const [offset, setOffset] = useState(0)
-	const productsPerPage = 10
+	const [offset, setOffset] = useState(GlobalConfig.paginationParams.offset)
+	const [products, setProducts] = useState<IProduct[]>([])
+	const {data: newProductsResult, refetch} = useGetAllProductsQuery({
+		offset: offset,
+		limit: GlobalConfig.paginationParams.itemsPerPage,
+	})
 
-	const dispatch = useAppDispatch()
-	const products = useSelector(selectProducts)
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		dispatch(fetchProducts({offset: offset, limit: productsPerPage}))
-	}, [dispatch])
+		if (newProductsResult !== products && newProductsResult !== undefined) {
+			setProducts([...products, ...newProductsResult])
+		}
+	}, [newProductsResult])
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -24,13 +28,18 @@ function Home() {
 				window.innerHeight + window.scrollY >=
 				document.body.offsetHeight - 200
 			) {
-				setOffset((prevOffset) => prevOffset + productsPerPage)
+				refetch()
+				setOffset(
+					(prevOffset) =>
+						prevOffset + GlobalConfig.paginationParams.itemsPerPage
+				)
 			}
 		}
 
 		window.addEventListener("scroll", handleScroll)
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [])
+
 	return (
 		<div className={styles.Home}>
 			<div className="row">
