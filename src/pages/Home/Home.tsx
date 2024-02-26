@@ -9,7 +9,11 @@ import {useGetAllProductsQuery} from "../../store/Products/ProductService"
 function Home() {
 	const [offset, setOffset] = useState(GlobalConfig.paginationParams.offset)
 	const [products, setProducts] = useState<IProduct[]>([])
-	const {data: newProductsResult, refetch} = useGetAllProductsQuery({
+	const {
+		data: newProductsResult,
+		isLoading,
+		refetch,
+	} = useGetAllProductsQuery({
 		offset: offset,
 		limit: GlobalConfig.paginationParams.itemsPerPage,
 	})
@@ -28,15 +32,17 @@ function Home() {
 				window.innerHeight + window.scrollY >=
 				document.body.offsetHeight - 200
 			) {
-				refetch()
 				setOffset(
 					(prevOffset) =>
 						prevOffset + GlobalConfig.paginationParams.itemsPerPage
 				)
+				refetch()
 			}
 		}
+		if (!isLoading) {
+			window.addEventListener("scroll", handleScroll)
+		}
 
-		window.addEventListener("scroll", handleScroll)
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [])
 
