@@ -19,6 +19,9 @@ function LeftNav() {
 				<Nav.Link as={Link} to="/product-management">
 					Product Management
 				</Nav.Link>
+				<Nav.Link as={Link} to="/products/add">
+					Add Product
+				</Nav.Link>
 			</Nav>
 		</div>
 	)

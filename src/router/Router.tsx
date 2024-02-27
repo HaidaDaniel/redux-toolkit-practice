@@ -11,6 +11,9 @@ const ProductPage = lazyWithPreload(() => import("../pages/Product/Product"))
 const ProductManagement = lazyWithPreload(
 	() => import("../pages/ProductManagement/ProductManagement")
 )
+const AddProduct = lazyWithPreload(
+	() => import("../pages/AddProduct/AddProduct")
+)
 
 export const router = createBrowserRouter([
 	{
@@ -61,6 +64,16 @@ export const router = createBrowserRouter([
 			{
 				index: true,
 				element: <ProductPage />,
+			},
+		],
+	},
+	{
+		path: "/products/add",
+		element: <Layout />,
+		children: [
+			{
+				index: true,
+				element: <AddProduct />,
 			},
 		],
 	},
