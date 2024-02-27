@@ -19,6 +19,7 @@ function Home() {
 		data: newProductsResult,
 		isLoading,
 		refetch,
+		isFetching,
 	} = useGetAllProductsQuery({
 		offset: offset,
 		limit: GlobalConfig.paginationParams.itemsPerPage,
@@ -30,6 +31,16 @@ function Home() {
 		(state: RootState) => state.categories.Categories
 	)
 
+	const offsetChangeHandler = (addOffSet: number) => {
+		if (
+			newProductsResult &&
+			newProductsResult.length <
+				GlobalConfig.paginationParams.itemsPerPage
+		) {
+			return
+		} else return addOffSet
+	}
+
 	useEffect(() => {
 		if (newProductsResult !== products && newProductsResult !== undefined) {
 			setProducts([...products, ...newProductsResult])
@@ -38,24 +49,31 @@ function Home() {
 
 	useEffect(() => {
 		dispatch(fetchCategories())
-		const handleScroll = () => {
+	}, [dispatch])
+	useEffect(() => {
+		const handleScroll = async () => {
+			console.log(isFetching, offset)
 			if (
+				!isFetching &&
+				newProductsResult !== undefined &&
 				window.innerHeight + window.scrollY >=
-				document.body.offsetHeight - 200
+					document.body.offsetHeight - 200
 			) {
-				setOffset(
-					(prevOffset) =>
-						prevOffset + GlobalConfig.paginationParams.itemsPerPage
+				const newAddOffSet = offsetChangeHandler(
+					newProductsResult.length
 				)
-				refetch()
+
+				if (typeof newAddOffSet === "number") {
+					setOffset(offset + newAddOffSet)
+					refetch()
+				}
 			}
 		}
-		if (!isLoading) {
-			window.addEventListener("scroll", handleScroll)
-		}
+
+		window.addEventListener("scroll", handleScroll)
 
 		return () => window.removeEventListener("scroll", handleScroll)
-	}, [])
+	}, [isFetching])
 
 	const toggleCategory = (categoryId: number) => {
 		console.log(categoryId)
@@ -73,7 +91,7 @@ function Home() {
 			setSelectedCategories([categoryId])
 		}
 	}
-
+	console.log(products)
 	return (
 		<div className={styles.Home}>
 			<div className="row">
@@ -107,11 +125,8 @@ function Home() {
 			</div>
 			<div className="row">
 				{products &&
-					products.map((product) => (
-						<div
-							className="col-lg-4 col-md-6 mb-4"
-							key={product.id}
-						>
+					products.map((product, i) => (
+						<div className="col-lg-4 col-md-6 mb-4" key={i}>
 							<div className="card h-100">
 								<img
 									onClick={() =>
